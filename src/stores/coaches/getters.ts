@@ -1,9 +1,16 @@
 import type State from "@/stores/coaches/interfaces";
 
-
 export default {
     getCoaches: (state: State) => {
-        return state.coaches;
+        return (filters?: any) => {
+            if (!filters) {
+                return state.coaches;
+            }
+            const filteredCoaches = state.coaches.filter(coach => {
+                return coach.areas.some(area => filters[area] === true);
+            })
+            return filteredCoaches;
+        };
     },
 
     getCoachById:
