@@ -2,6 +2,10 @@
 import {computed} from "vue";
 import {useRoute} from "vue-router";
 import type {CoachInfo} from "@/stores/coaches/interfaces";
+import BaseBox from "@/components/ui/BaseBox.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseBadge from "@/components/ui/BaseBadge.vue";
+import BaseBadgeList from "@/components/ui/BaseBadgeList.vue";
 
 const props = defineProps<{
   coach?: CoachInfo
@@ -18,21 +22,24 @@ const detailsLink = computed(() => `${path}/${id}`)
 </script>
 
 <template>
-  <li class="box">
-    <div class="">
+  <li>
+    <base-box>
       <h3 class="title">{{ fullName }}</h3>
       <h4 class="subtitle">${{ rate }}/hour</h4>
-      <div class="mb-3">
-        <span class="tag mr-2" v-for="area in areas" :key="area">{{ area }}</span>
-      </div>
+      <base-badge-list class="mb-3">
+        <base-badge v-for="area in areas" :key="area" :title="area" :type="area" />
+      </base-badge-list>
       <div class="buttons is-justify-content-flex-end">
-        <router-link :to="contactLink" class="button is-primary is-small">Contact</router-link>
-        <router-link :to="detailsLink" class="button is-link is-small">View Details</router-link>
+        <base-button link :to="contactLink" class="is-outlined is-small">Contact</base-button>
+        <base-button link :to="detailsLink" class="is-link is-small">View Details</base-button>
       </div>
-    </div>
+    </base-box>
   </li>
 </template>
 
 <style scoped>
-
+  li {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 </style>

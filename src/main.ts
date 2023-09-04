@@ -7,8 +7,17 @@ import {createPinia} from "pinia";
 
 const pinia = createPinia();
 const app = createApp(App);
+import BaseBox from "@/components/ui/BaseBox.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseBadge from "@/components/ui/BaseBadge.vue";
+import BaseBadgeList from "@/components/ui/BaseBadgeList.vue";
 
 app.use(router);
 app.use(pinia);
+
+app.component('base-box', BaseBox);
+app.component('base-button', BaseButton);
+app.component('base-badge', BaseBadge);
+app.component('base-badge-list', BaseBadgeList);
 
 app.mount('#app')
