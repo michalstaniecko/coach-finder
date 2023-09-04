@@ -24,29 +24,31 @@ const contactLink = computed(() => `${route.path}/contact`);
 </script>
 
 <template>
-  <section>
-    <base-box>
-      <h2 class="title">{{ fullName }}</h2>
-      <h3 class="subtitle">{{ rate }}</h3>
-    </base-box>
-  </section>
-  <section>
-    <base-box>
-      <header>
-        <h2 class="subtitle">Interested? Reach out now!</h2>
-        <base-button link :to="contactLink">Contact</base-button>
-      </header>
-      <router-view></router-view>
-    </base-box>
-  </section>
-  <section>
-    <base-box>
-      <base-badge-list>
-        <base-badge v-for="area in areas" :key="area" :title="area" :type="area"/>
-      </base-badge-list>
-      <p>{{ description }}</p>
-    </base-box>
-  </section>
+  <base-container>
+    <section>
+      <base-box>
+        <h2 class="title">{{ fullName }}</h2>
+        <h3 class="subtitle">{{ rate }}</h3>
+      </base-box>
+    </section>
+    <section>
+      <base-box>
+        <header>
+          <h2 class="subtitle">Interested? Reach out now!</h2>
+          <base-button link :to="contactLink">Contact</base-button>
+        </header>
+        <router-view></router-view>
+      </base-box>
+    </section>
+    <section>
+      <base-box>
+        <base-badge-list>
+          <base-badge v-for="area in areas" :key="area" :title="area" :type="area"/>
+        </base-badge-list>
+        <p>{{ description }}</p>
+      </base-box>
+    </section>
+  </base-container>
 </template>
 
 <style scoped>
