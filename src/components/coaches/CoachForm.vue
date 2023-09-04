@@ -1,6 +1,10 @@
 <script setup lang="ts">
 
-import {reactive} from "vue";
+import {reactive, defineEmits} from "vue";
+
+const emit = defineEmits<{
+  (e: 'save-data', value: object): void
+}>();
 
 const data = reactive({
   firstName: '',
@@ -15,11 +19,11 @@ const submitHandler = () => {
     firstName: data.firstName,
     lastName: data.lastName,
     description: data.description,
-    rate: data.rate,
+    hourlyRate: data.rate,
     areas: data.areas
   }
 
-  console.log(formData);
+  emit('save-data', formData);
 }
 
 </script>
@@ -41,7 +45,9 @@ const submitHandler = () => {
     <div class="field">
       <label class="label" for="description">Description</label>
       <div class="control">
-        <textarea class="textarea" v-model.trim="data.description" id="description" placeholder="Description"></textarea>
+        <textarea
+            class="textarea" v-model.trim="data.description" id="description" placeholder="Description"
+        ></textarea>
       </div>
     </div>
     <div class="field">

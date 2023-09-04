@@ -3,7 +3,7 @@ export default interface State {
 }
 
 export interface CoachInfo {
-    id: string,
+    id?: string,
     firstName: string,
     lastName: string,
     areas: CoachAreaInfo[],

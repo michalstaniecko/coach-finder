@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
-import actions from './actions';
 import getters from './getters';
+import * as actions from './actions';
 import type State from "@/stores/coaches/interfaces";
+import type {CoachInfo} from "@/stores/coaches/interfaces";
 
 
 export const useCoachesStore = defineStore('coaches', {
@@ -28,5 +29,9 @@ export const useCoachesStore = defineStore('coaches', {
         ]
     }),
     getters,
-    actions
+    actions: {
+        addCoach(payload: CoachInfo) {
+            actions.addCoach(this, payload);
+        }
+    }
 });
