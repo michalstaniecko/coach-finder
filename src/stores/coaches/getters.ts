@@ -6,6 +6,10 @@ export default {
         return state.coaches;
     },
 
+    getCoachById:
+        (state: State) => (id: string) =>
+            state.coaches.find(coach => coach.id === id),
+
     hasCoaches(state: State) {
         return state.coaches && state.coaches.length > 0;
     }

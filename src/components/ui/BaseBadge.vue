@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {computed} from "vue";
+import type {CoachAreaInfo} from "@/stores/coaches/interfaces";
 
 const props = defineProps<{
     title: string,
-    type: 'frontend' | 'backend' | 'career'
+    type: CoachAreaInfo
   }>()
 
 const typeClass = computed(() => {

@@ -6,7 +6,9 @@ export interface CoachInfo {
     id: string,
     firstName: string,
     lastName: string,
-    areas: string[],
+    areas: CoachAreaInfo[],
     description: string,
     hourlyRate: number
 }
+
+export type CoachAreaInfo = 'frontend' | 'backend' | 'career';
