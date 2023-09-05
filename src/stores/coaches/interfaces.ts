@@ -11,4 +11,13 @@ export interface CoachInfo {
     hourlyRate: number
 }
 
+export interface CoachFormInfo {
+    id: string,
+    firstName: {val: string},
+    lastName: {val: string},
+    areas: { val: CoachAreaInfo[] },
+    description: {val: string},
+    hourlyRate: {val: number}
+}
+
 export type CoachAreaInfo = 'frontend' | 'backend' | 'career';
