@@ -11,14 +11,14 @@ const props = defineProps<{
 
 const coachesStore = useCoachesStore();
 
-const {firstName, lastName, hourlyRate, areas, description } = coachesStore.getCoachById('c1');
+const {firstName, lastName, hourlyRate, areas, description } = coachesStore.getCoachById(props.id);
 
 const rate = computed(() => {
   return `$${hourlyRate}/hour`;
 })
 
 const fullName = computed(() => `${firstName} ${lastName}`);
-
+console.log(route);
 const contactLink = computed(() => `${route.path}/contact`);
 
 </script>

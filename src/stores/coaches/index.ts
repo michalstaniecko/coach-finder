@@ -1,9 +1,8 @@
 import {defineStore} from "pinia";
 import getters from './getters';
-import * as actions from './actions';
 import type State from "@/stores/coaches/interfaces";
 import type {CoachInfo} from "@/stores/coaches/interfaces";
-
+import {useUserStore} from "@/stores/user";
 
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
@@ -31,7 +30,16 @@ export const useCoachesStore = defineStore('coaches', {
     getters,
     actions: {
         addCoach(payload: CoachInfo) {
-            actions.addCoach(this, payload);
+            const userStore = useUserStore();
+            const coachData = {
+                id: userStore.getCurrentUserId,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                areas: payload.areas,
+                description: payload.description,
+                hourlyRate: payload.hourlyRate
+            }
+            this.coaches.push(coachData)
         }
     }
 });

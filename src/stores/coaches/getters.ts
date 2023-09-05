@@ -1,4 +1,5 @@
 import type State from "@/stores/coaches/interfaces";
+import {useUserStore} from "@/stores/user";
 
 export default {
     getCoaches: (state: State) => {
@@ -19,5 +20,12 @@ export default {
 
     hasCoaches(state: State) {
         return state.coaches && state.coaches.length > 0;
+    },
+
+    isCoach(state: State) {
+        const userStore = useUserStore();
+        const coaches = state.coaches;
+        const currentUserId = userStore.getCurrentUserId;
+        return coaches.some(coach => coach.id === currentUserId);
     }
 }

@@ -25,6 +25,8 @@ const updateFiltersHandler = (filters) => {
   data.filters = filters;
 }
 
+const isCoach = computed(() => coachesStore.isCoach);
+
 </script>
 
 <template>
@@ -36,7 +38,7 @@ const updateFiltersHandler = (filters) => {
       <base-box class="mt-5 has-background-grey-lighter">
         <div class="buttons is-justify-content-space-between">
           <base-button mode="">Refresh</base-button>
-          <base-button link class="button" to="/register">Register as a coach</base-button>
+          <base-button v-if="!isCoach" link class="button" to="/register">Register as a coach</base-button>
         </div>
         <ul v-if="hasCoaches">
           <coach-item v-for="coach in filteredCoaches" :key="coach.id" :coach="coach"/>
