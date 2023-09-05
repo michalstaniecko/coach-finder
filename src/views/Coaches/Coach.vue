@@ -18,7 +18,7 @@ const rate = computed(() => {
 })
 
 const fullName = computed(() => `${firstName} ${lastName}`);
-console.log(route);
+
 const contactLink = computed(() => `${route.path}/contact`);
 
 </script>
