@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
-import {computed, reactive} from "vue";
+import {computed, reactive, onMounted} from "vue";
 import {useCoachesStore} from "@/stores";
 import BaseBox from "@/components/ui/BaseBox.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
@@ -27,6 +27,14 @@ const updateFiltersHandler = (filters) => {
 
 const isCoach = computed(() => coachesStore.isCoach);
 
+const loadCoaches = () => {
+  coachesStore.loadAndSetCoaches();
+}
+
+onMounted(() => {
+  loadCoaches();
+});
+
 </script>
 
 <template>
@@ -37,7 +45,7 @@ const isCoach = computed(() => coachesStore.isCoach);
     <section>
       <base-box class="mt-5 has-background-grey-lighter">
         <div class="buttons is-justify-content-space-between">
-          <base-button mode="">Refresh</base-button>
+          <base-button mode="" @click.prevent="loadCoaches">Refresh</base-button>
           <base-button v-if="!isCoach" link class="button" to="/register">Register as a coach</base-button>
         </div>
         <ul v-if="hasCoaches">

@@ -3,7 +3,7 @@ export default interface State {
 }
 
 export interface CoachInfo {
-    id: string,
+    id?: string,
     firstName: string,
     lastName: string,
     areas: CoachAreaInfo[],
@@ -12,7 +12,6 @@ export interface CoachInfo {
 }
 
 export interface CoachFormInfo {
-    id: string,
     firstName: {val: string},
     lastName: {val: string},
     areas: { val: CoachAreaInfo[] },

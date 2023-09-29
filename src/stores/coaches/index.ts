@@ -1,8 +1,11 @@
 import {defineStore} from "pinia";
 import getters from './getters';
 import type State from "@/stores/coaches/interfaces";
+import type {CoachInfo} from "@/stores/coaches/interfaces";
 import type {CoachFormInfo} from "@/stores/coaches/interfaces";
 import {useUserStore} from "@/stores/user";
+import axios from "axios";
+import database from "@/database";
 
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
@@ -29,17 +32,52 @@ export const useCoachesStore = defineStore('coaches', {
     }),
     getters,
     actions: {
-        addCoach(payload: CoachFormInfo) {
+        async addCoach(payload: CoachFormInfo) {
             const userStore = useUserStore();
-            const coachData = {
-                id: userStore.getCurrentUserId,
+            const userId = userStore.getCurrentUserId;
+            const coachData: CoachInfo = {
                 firstName: payload.firstName.val,
                 lastName: payload.lastName.val,
                 areas: payload.areas.val,
                 description: payload.description.val,
                 hourlyRate: payload.hourlyRate.val
             }
-            this.coaches.push(coachData)
+
+            const response = await axios.put(`${database.url}/coaches/${userId}.json`, {
+                ...coachData
+            });
+
+            if (response.status !== 200) {
+                // error
+            }
+
+            this.coaches.push({
+                ...coachData,
+                id: userId
+            })
+        },
+
+        async loadAndSetCoaches() {
+            const response = await axios.get(`${database.url}/coaches.json`);
+
+            console.log(response);
+
+            if (response.status !== 200) {
+                // error
+            }
+
+            const responseData = response.data;
+
+            const coaches = Object.keys(responseData).map(key => ({
+                id: key,
+                firstName: responseData[key].firstName,
+                lastName: responseData[key].lastName,
+                areas: responseData[key].areas,
+                description: responseData[key].description,
+                hourlyRate: responseData[key].hourlyRate
+            }));
+
+            this.coaches = coaches;
         }
     }
 });
