@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {reactive, defineEmits} from "vue";
+import {reactive} from "vue";
 
 const emit = defineEmits<{
   (e: 'save-data', value: object): void
