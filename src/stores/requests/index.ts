@@ -6,7 +6,14 @@ export const useRequestsStore = defineStore('requests', {
     state: (): State => ({
         requests: []
     }),
-    getters: {},
+    getters: {
+        getRequests(): RequestInfo[] {
+            return this.requests;
+        },
+        hasRequests(): boolean {
+            return this.requests && this.requests.length > 0;
+        }
+    },
     actions: {
         addRequest(request: RequestFormInfo) {
             const newRequest = {

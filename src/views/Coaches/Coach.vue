@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {computed} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {useCoachesStore} from "@/stores";
 
 const route = useRoute();
+const router = useRouter();
 
 const props = defineProps<{
   id: string
@@ -11,15 +12,18 @@ const props = defineProps<{
 
 const coachesStore = useCoachesStore();
 
-const {firstName, lastName, hourlyRate, areas, description } = coachesStore.getCoachById(props.id);
+const {firstName, lastName, hourlyRate, areas, description} = coachesStore.getCoachById(props.id);
 
 const rate = computed(() => {
   return `$${hourlyRate}/hour`;
 })
 
 const fullName = computed(() => `${firstName} ${lastName}`);
-
-const contactLink = computed(() => `${route.path}/contact`);
+const parentRoute = router.resolve({
+  name: 'coach',
+  params: {id: props.id}
+});
+const contactLink = computed(() => `${parentRoute.path}/contact`);
 
 </script>
 

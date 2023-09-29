@@ -3,7 +3,10 @@ export default interface State {
 }
 
 export interface RequestInfo {
-
+    id: string,
+    coachId: string,
+    userEmail: string,
+    message: string
 }
 
 export interface RequestFormInfo {

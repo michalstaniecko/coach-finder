@@ -16,12 +16,13 @@ const router = createRouter({
             path: '/coaches', component: Coaches
         },
         {
-            path: '/coaches/:id/',
+            path: '/coaches/:id',
             component: Coach,
+            name: 'coach',
             props: true,
             children: [
                 {
-                    path: 'contact', component: Contact
+                    path: 'contact', component: Contact, name: 'contact'
                 }
             ]
         },
@@ -36,5 +37,9 @@ const router = createRouter({
         }
     ]
 });
+
+router.beforeEach(() => {
+
+})
 
 export default router;
