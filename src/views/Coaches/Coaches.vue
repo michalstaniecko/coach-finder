@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
-import {computed, reactive, onMounted} from "vue";
+import {computed, reactive, onMounted, ref} from "vue";
 import {useCoachesStore} from "@/stores";
-import BaseBox from "@/components/ui/BaseBox.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+
+const isLoading = ref(false);
 
 const data = reactive({
   filters: {
@@ -12,11 +12,11 @@ const data = reactive({
     backend: true,
     career: true
   }
-})
+});
 
 const coachesStore = useCoachesStore();
 
-const hasCoaches = computed(() => coachesStore.hasCoaches);
+const hasCoaches = computed(() => !isLoading.value && coachesStore.hasCoaches);
 const filteredCoaches = computed(() => {
   return coachesStore.getCoaches(data.filters)
 })
@@ -27,8 +27,10 @@ const updateFiltersHandler = (filters) => {
 
 const isCoach = computed(() => coachesStore.isCoach);
 
-const loadCoaches = () => {
-  coachesStore.loadAndSetCoaches();
+const loadCoaches = async () => {
+  isLoading.value = true;
+  await coachesStore.loadAndSetCoaches();
+  isLoading.value = false;
 }
 
 onMounted(() => {
@@ -46,9 +48,12 @@ onMounted(() => {
       <base-box class="mt-5 has-background-grey-lighter">
         <div class="buttons is-justify-content-space-between">
           <base-button mode="" @click.prevent="loadCoaches">Refresh</base-button>
-          <base-button v-if="!isCoach" link class="button" to="/register">Register as a coach</base-button>
+          <base-button v-if="!isCoach && !isLoading" link class="button" to="/register">Register as a coach</base-button>
         </div>
-        <ul v-if="hasCoaches">
+        <div v-if="isLoading">
+          <base-spinner/>
+        </div>
+        <ul v-else-if="hasCoaches">
           <coach-item v-for="coach in filteredCoaches" :key="coach.id" :coach="coach"/>
         </ul>
         <div v-else>
