@@ -3,10 +3,14 @@ import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
 import {computed, reactive, onMounted, ref} from "vue";
 import {useCoachesStore} from "@/stores";
+import type {AxiosError} from "axios";
 
 const isLoading = ref(false);
+const error = ref();
 
-const data = reactive({
+const data = reactive<{
+  filters: {[key: string]: boolean}
+}>({
   filters: {
     frontend: true,
     backend: true,
@@ -21,7 +25,7 @@ const filteredCoaches = computed(() => {
   return coachesStore.getCoaches(data.filters)
 })
 
-const updateFiltersHandler = (filters) => {
+const updateFiltersHandler = (filters: {[key: string]: boolean}) => {
   data.filters = filters;
 }
 
@@ -29,9 +33,16 @@ const isCoach = computed(() => coachesStore.isCoach);
 
 const loadCoaches = async () => {
   isLoading.value = true;
-  await coachesStore.loadAndSetCoaches();
+  try {
+    await coachesStore.loadAndSetCoaches();
+  } catch (e) {
+    error.value = (e as Error).message || 'Something went wrong!';
+  }
+
   isLoading.value = false;
 }
+
+const onErrorClose = () => error.value = null
 
 onMounted(() => {
   loadCoaches();
@@ -40,6 +51,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <base-dialog :show="!!error" title="An error occurred!" @close="onErrorClose">
+    <p>{{ error }}</p>
+  </base-dialog>
   <base-container>
     <section>
       <coach-filter @update="updateFiltersHandler"/>

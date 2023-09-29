@@ -2,7 +2,7 @@
 import {reactive} from "vue";
 
 const emit = defineEmits<{
-  (e: 'update', value: object): void
+  (e: 'update', value: {[key: string]: boolean}): void
 }>();
 
 const data = reactive({
@@ -14,8 +14,8 @@ const data = reactive({
 });
 
 const setFilter = (event) => {
-  const inputId = event.target.id;
-  const isActive = event.target.checked;
+  const inputId = event.target!.id;
+  const isActive = event.target!.checked;
   const updatedFilters = {
     ...data.filters,
     [inputId]: isActive

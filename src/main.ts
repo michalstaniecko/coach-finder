@@ -12,6 +12,7 @@ import BaseBadge from "@/components/ui/BaseBadge.vue";
 import BaseBadgeList from "@/components/ui/BaseBadgeList.vue";
 import BaseContainer from "@/components/ui/BaseContainer.vue";
 import BaseSpinner from "@/components/ui/BaseSpinner.vue";
+import BaseDialog from "@/components/ui/BaseDialog.vue";
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -25,5 +26,6 @@ app.component('base-badge', BaseBadge);
 app.component('base-badge-list', BaseBadgeList);
 app.component('base-container', BaseContainer);
 app.component('base-spinner', BaseSpinner);
+app.component('base-dialog', BaseDialog);
 
 app.mount('#app')

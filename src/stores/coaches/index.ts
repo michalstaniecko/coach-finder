@@ -6,6 +6,7 @@ import type {CoachFormInfo} from "@/stores/coaches/interfaces";
 import {useUserStore} from "@/stores/user";
 import axios from "axios";
 import database from "@/database";
+import type {AxiosError} from "axios";
 
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
@@ -57,13 +58,22 @@ export const useCoachesStore = defineStore('coaches', {
             })
         },
 
+        async loadCoaches() {
+            try {
+                return await axios.get(`${database.url}/coaches.json`);
+            } catch (error) {
+                throw new Error((error as AxiosError).message);
+            }
+        },
+
         async loadAndSetCoaches() {
-            const response = await axios.get(`${database.url}/coaches.json`);
+            const response = await this.loadCoaches();
 
             console.log(response);
 
             if (response.status !== 200) {
-                // error
+                const error = new Error(response.statusText || 'Failed to fetch');
+                throw error;
             }
 
             const responseData = response.data;
