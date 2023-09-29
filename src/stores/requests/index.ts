@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import type State from "@/stores/requests/interfaces";
 import type {RequestInfo, RequestFormInfo} from "@/stores/requests/interfaces";
+import {useUserStore} from "@/stores";
 
 export const useRequestsStore = defineStore('requests', {
     state: (): State => ({
@@ -8,10 +9,12 @@ export const useRequestsStore = defineStore('requests', {
     }),
     getters: {
         getRequests(): RequestInfo[] {
-            return this.requests;
+            const userStore = useUserStore();
+            const coachId = userStore.getCurrentUserId;
+            return this.requests.filter(req => req.coachId === coachId);
         },
         hasRequests(): boolean {
-            return this.requests && this.requests.length > 0;
+            return this.getRequests && this.getRequests.length > 0;
         }
     },
     actions: {
