@@ -8,7 +8,7 @@ const router = useRouter();
 
 const props = defineProps<{
   id: string
-}>()
+}>();
 
 const coachesStore = useCoachesStore();
 

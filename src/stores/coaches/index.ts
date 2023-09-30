@@ -69,8 +69,6 @@ export const useCoachesStore = defineStore('coaches', {
         async loadAndSetCoaches() {
             const response = await this.loadCoaches();
 
-            console.log(response);
-
             if (response.status !== 200) {
                 const error = new Error(response.statusText || 'Failed to fetch');
                 throw error;

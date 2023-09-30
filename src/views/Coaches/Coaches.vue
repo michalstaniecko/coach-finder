@@ -3,7 +3,6 @@ import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
 import {computed, reactive, onMounted, ref} from "vue";
 import {useCoachesStore} from "@/stores";
-import type {AxiosError} from "axios";
 
 const isLoading = ref(false);
 const error = ref();

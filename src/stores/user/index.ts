@@ -3,7 +3,7 @@ import type State from "@/stores/user/interfaces";
 
 export const useUserStore = defineStore('user', {
     state: (): State => ({
-        id: 'c3'
+        id: 'c1'
     }),
     getters: {
         getCurrentUserId(): string {

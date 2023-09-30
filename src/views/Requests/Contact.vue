@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {useRequestsStore} from "@/stores";
 import {useRoute, useRouter} from "vue-router";
 
@@ -8,6 +8,8 @@ const router = useRouter();
 
 const requestsStore = useRequestsStore();
 
+const isLoading = ref(false);
+const error = ref<string | null>();
 const data = reactive({
   email: {
     val: '',
@@ -35,26 +37,40 @@ const validateForm = () => {
   }
 }
 
-const submitHandler = () => {
+const submitHandler = async () => {
   validateForm();
 
   if (!data.formIsValid) return;
 
+  isLoading.value = true;
+
   const coachId: string = route.params.id.toString();
 
-  requestsStore.addRequest({
-    email: data.email.val,
-    message: data.message.val,
-    coachId: coachId
-  });
+  try {
+    await requestsStore.addRequest({
+      email: data.email.val,
+      message: data.message.val,
+      coachId: coachId
+    });
+    router.push('/coaches');
+  } catch (e) {
+    error.value = (e as Error).message || 'Something went wrong';
+  }
 
-  router.push('/coaches');
-
+  isLoading.value = false;
 }
+
+const onClose = () => error.value = null;
 </script>
 
 <template>
-  <form class="py-5" @submit.prevent="submitHandler" novalidate>
+  <base-dialog :show="!!error && !isLoading" title="An error occurred!" @close="onClose">
+    <p>
+      {{ error }}
+    </p>
+  </base-dialog>
+  <base-spinner v-if="isLoading" />
+  <form v-else class="py-5" @submit.prevent="submitHandler" novalidate>
     <div class="field">
       <label class="label" for="email">First Name</label>
       <div class="control">
