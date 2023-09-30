@@ -27,5 +27,15 @@ export default {
         const coaches = state.coaches;
         const currentUserId = userStore.getCurrentUserId;
         return coaches.some(coach => coach.id === currentUserId);
+    },
+
+    shouldUpdate(state: State) {
+        const lastFetch = state.lastFetch;
+        if (!lastFetch) {
+            return true;
+        }
+
+        const currentTimestamp = new Date().getTime();
+        return (currentTimestamp - lastFetch) / 1000 > 60;
     }
 }

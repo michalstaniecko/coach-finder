@@ -30,10 +30,10 @@ const updateFiltersHandler = (filters: {[key: string]: boolean}) => {
 
 const isCoach = computed(() => coachesStore.isCoach);
 
-const loadCoaches = async () => {
+const loadCoaches = async (forceRefresh = false) => {
   isLoading.value = true;
   try {
-    await coachesStore.loadAndSetCoaches();
+    await coachesStore.loadAndSetCoaches(forceRefresh);
   } catch (e) {
     error.value = (e as Error).message || 'Something went wrong!';
   }
@@ -60,7 +60,7 @@ onMounted(() => {
     <section>
       <base-box class="mt-5 has-background-grey-lighter">
         <div class="buttons is-justify-content-space-between">
-          <base-button mode="" @click.prevent="loadCoaches">Refresh</base-button>
+          <base-button mode="" @click.prevent="loadCoaches(true)">Refresh</base-button>
           <base-button v-if="!isCoach && !isLoading" link class="button" to="/register">Register as a coach</base-button>
         </div>
         <div v-if="isLoading">

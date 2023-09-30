@@ -10,6 +10,7 @@ import type {AxiosError} from "axios";
 
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
+        lastFetch: null,
         coaches: [
             {
                 id: 'c1',
@@ -66,7 +67,9 @@ export const useCoachesStore = defineStore('coaches', {
             }
         },
 
-        async loadAndSetCoaches() {
+        async loadAndSetCoaches(forceRefresh = false) {
+            if (!forceRefresh && !this.shouldUpdate) return;
+
             const response = await this.loadCoaches();
 
             if (response.status !== 200) {
@@ -86,6 +89,10 @@ export const useCoachesStore = defineStore('coaches', {
             }));
 
             this.coaches = coaches;
+            this.setFetchTimestamp();
+        },
+        setFetchTimestamp() {
+            this.lastFetch = new Date().getTime();
         }
     }
 });
