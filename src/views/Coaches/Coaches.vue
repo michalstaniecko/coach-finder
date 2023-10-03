@@ -50,31 +50,33 @@ onMounted(() => {
 </script>
 
 <template>
-  <base-dialog :show="!!error" title="An error occurred!" @close="onErrorClose" type="danger">
-    <p>{{ error }}</p>
-  </base-dialog>
-  <base-container>
-    <section>
-      <coach-filter @update="updateFiltersHandler"/>
-    </section>
-    <section>
-      <base-box class="mt-5 has-background-grey-lighter">
-        <div class="buttons is-justify-content-space-between">
-          <base-button mode="" @click.prevent="loadCoaches(true)">Refresh</base-button>
-          <base-button v-if="!isCoach && !isLoading" link class="button" to="/register">Register as a coach</base-button>
-        </div>
-        <div v-if="isLoading">
-          <base-spinner/>
-        </div>
-        <ul v-else-if="hasCoaches">
-          <coach-item v-for="coach in filteredCoaches" :key="coach.id" :coach="coach"/>
-        </ul>
-        <div v-else>
-          <h2 class="title">No coaches found</h2>
-        </div>
-      </base-box>
-    </section>
-  </base-container>
+  <div>
+    <base-dialog :show="!!error" title="An error occurred!" @close="onErrorClose" type="danger">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <base-container>
+      <section>
+        <coach-filter @update="updateFiltersHandler"/>
+      </section>
+      <section>
+        <base-box class="mt-5 has-background-grey-lighter">
+          <div class="buttons is-justify-content-space-between">
+            <base-button mode="" @click.prevent="loadCoaches(true)">Refresh</base-button>
+            <base-button v-if="!isCoach && !isLoading" link class="button" to="/register">Register as a coach</base-button>
+          </div>
+          <div v-if="isLoading">
+            <base-spinner/>
+          </div>
+          <ul v-else-if="hasCoaches">
+            <coach-item v-for="coach in filteredCoaches" :key="coach.id" :coach="coach"/>
+          </ul>
+          <div v-else>
+            <h2 class="title">No coaches found</h2>
+          </div>
+        </base-box>
+      </section>
+    </base-container>
+  </div>
 </template>
 
 <style scoped>

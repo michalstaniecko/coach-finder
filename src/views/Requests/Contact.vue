@@ -64,32 +64,33 @@ const onClose = () => error.value = null;
 </script>
 
 <template>
-  <base-dialog :show="!!error && !isLoading" title="An error occurred!" @close="onClose">
-    <p>
-      {{ error }}
-    </p>
-  </base-dialog>
-  <base-spinner v-if="isLoading" />
-  <form v-else class="py-5" @submit.prevent="submitHandler" novalidate>
-    <div class="field">
-      <label class="label" for="email">First Name</label>
-      <div class="control">
-        <input
-            class="input"
-            @blur="resetValidation('email')"
-            :class="{'is-danger': !data.email.isValid}"
-            v-model.trim="data.email.val"
-            type="email"
-            id="email"
-            placeholder="Email"
-        />
+  <div>
+    <base-dialog :show="!!error && !isLoading" title="An error occurred!" @close="onClose">
+      <p>
+        {{ error }}
+      </p>
+    </base-dialog>
+    <base-spinner v-if="isLoading"/>
+    <form v-else class="py-5" @submit.prevent="submitHandler" novalidate>
+      <div class="field">
+        <label class="label" for="email">First Name</label>
+        <div class="control">
+          <input
+              class="input"
+              @blur="resetValidation('email')"
+              :class="{'is-danger': !data.email.isValid}"
+              v-model.trim="data.email.val"
+              type="email"
+              id="email"
+              placeholder="Email"
+          />
+        </div>
+        <p class="help is-danger" v-if="!data.email.isValid">Invalid email address!</p>
       </div>
-      <p class="help is-danger" v-if="!data.email.isValid">Invalid email address!</p>
-    </div>
 
-    <div class="field">
-      <label class="label" for="message">Message</label>
-      <div class="control">
+      <div class="field">
+        <label class="label" for="message">Message</label>
+        <div class="control">
         <textarea
             class="textarea"
             @blur="resetValidation('message')"
@@ -98,16 +99,17 @@ const onClose = () => error.value = null;
             id="message"
             placeholder="Message"
         ></textarea>
+        </div>
+        <p class="help is-danger" v-if="!data.message.isValid">Message must not be empty!</p>
       </div>
-      <p class="help is-danger" v-if="!data.message.isValid">Message must not be empty!</p>
-    </div>
-    <p v-if="!data.formIsValid" class="help has-text-danger py-2">
-      Please fix the above errors and submit again.
-    </p>
-    <div>
-      <base-button class="is-primary">Send message</base-button>
-    </div>
-  </form>
+      <p v-if="!data.formIsValid" class="help has-text-danger py-2">
+        Please fix the above errors and submit again.
+      </p>
+      <div>
+        <base-button class="is-primary">Send message</base-button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <style scoped>
