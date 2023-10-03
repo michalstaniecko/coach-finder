@@ -61,7 +61,7 @@ export const useCoachesStore = defineStore('coaches', {
 
         async loadCoaches() {
             try {
-                return await axios.get(`${database.url}/coaches.jso`);
+                return await axios.get(`${database.url}/coaches.json`);
             } catch (error) {
                 throw new Error((error as AxiosError).message);
             }
