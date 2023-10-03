@@ -1,6 +1,8 @@
 <script setup lang="ts">
-
+import {useUserStore} from "@/stores";
 import {ref} from "vue";
+
+const userStore = useUserStore();
 
 const email = ref('');
 const password = ref('');
@@ -12,6 +14,13 @@ const submitForm = () => {
   if (email.value === '' || !email.value.includes('@') || password.value.length < 6) {
     formIsValid.value = false;
     return;
+  }
+
+  if (mode.value === 'signup') {
+    userStore.signup({
+      email: email.value,
+      password: password.value
+    });
   }
 }
 
