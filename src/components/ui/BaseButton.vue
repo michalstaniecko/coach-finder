@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   link?: boolean | false,
-  to?: string | false,
+  to?: string | null,
   mode?: string | null
 }>()
 </script>
