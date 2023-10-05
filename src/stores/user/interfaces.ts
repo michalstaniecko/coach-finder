@@ -1,3 +1,11 @@
 export default interface State {
-    id: string
+    user: {
+        id?: string
+        email?: string | null
+    }
+}
+
+export interface UserForm {
+    email: string
+    password: string
 }

@@ -53,6 +53,9 @@ export const useRequestsStore = defineStore('requests', {
         async fetchRequests() {
             const userStore = useUserStore();
             const coachId = userStore.getCurrentUserId;
+
+            if (!coachId) return;
+
             const response = await this.loadRequests(coachId);
             const responseData = response.data;
             if (responseData) {

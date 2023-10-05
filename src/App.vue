@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import {useUserStore} from "@/stores";
 import TheHeader from "@/components/layout/TheHeader.vue";
+import {onMounted} from "vue";
 
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.init();
+});
 </script>
 
 <template>

@@ -8,6 +8,9 @@ import axios from "axios";
 import database from "@/database";
 import type {AxiosError} from "axios";
 
+import {ref, set, onValue} from 'firebase/database';
+import {db} from '@/js/firebase';
+
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
         lastFetch: null,
@@ -59,37 +62,22 @@ export const useCoachesStore = defineStore('coaches', {
             })
         },
 
-        async loadCoaches() {
-            try {
-                return await axios.get(`${database.url}/coaches.json`);
-            } catch (error) {
-                throw new Error((error as AxiosError).message);
-            }
-        },
-
         async loadAndSetCoaches(forceRefresh = false) {
-            if (!forceRefresh && !this.shouldUpdate) return;
 
-            const response = await this.loadCoaches();
+            const coaches: CoachInfo[] = [];
+            const coachesRef = ref(db, 'coaches');
+            const unsubscribe = onValue(coachesRef, (snapshot) => {
+                snapshot.forEach((doc) => {
+                    coaches.push(
+                        {
+                            ...doc.val(),
+                            id: doc.key
+                        }
+                    );
+                });
+                this.coaches = coaches;
+            });
 
-            if (response.status !== 200) {
-                const error = new Error(response.statusText || 'Failed to fetch');
-                throw error;
-            }
-
-            const responseData = response.data;
-
-            const coaches = Object.keys(responseData).map(key => ({
-                id: key,
-                firstName: responseData[key].firstName,
-                lastName: responseData[key].lastName,
-                areas: responseData[key].areas,
-                description: responseData[key].description,
-                hourlyRate: responseData[key].hourlyRate
-            }));
-
-            this.coaches = coaches;
-            this.setFetchTimestamp();
         },
         setFetchTimestamp() {
             this.lastFetch = new Date().getTime();

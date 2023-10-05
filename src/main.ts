@@ -2,7 +2,7 @@ import 'bulma/bulma.sass';
 import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
 import '@fortawesome/fontawesome-free/scss/solid.scss';
 
-import {createApp} from 'vue'
+import {createApp, markRaw} from 'vue'
 import App from './App.vue'
 import router from '@/router';
 import {createPinia} from "pinia";
@@ -16,6 +16,10 @@ import BaseDialog from "@/components/ui/BaseDialog.vue";
 
 const pinia = createPinia();
 const app = createApp(App);
+
+pinia.use(({store}) => {
+    store.router = markRaw(router);
+})
 
 app.use(router);
 app.use(pinia);
