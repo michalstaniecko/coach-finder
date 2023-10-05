@@ -29,6 +29,7 @@ export const useUserStore = defineStore('user', {
     actions: {
         init() {
             onAuthStateChanged(auth, (user: User | null) => {
+                // TODO: should be done something with redirecting
                 if (user) {
                     this.user.id = user.uid;
                     this.user.email = user.email;

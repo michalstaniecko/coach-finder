@@ -48,12 +48,12 @@ export const useCoachesStore = defineStore('coaches', {
                 hourlyRate: payload.hourlyRate.val
             }
 
-            const response = await axios.put(`${database.url}/coaches/${userId}.json`, {
-                ...coachData
-            });
+            const coachesRef = ref(db, `coaches/${userId}`);
 
-            if (response.status !== 200) {
-                // error
+            try {
+                await set(coachesRef, coachData);
+            } catch (error) {
+                console.log('add coach', error);
             }
 
             this.coaches.push({
