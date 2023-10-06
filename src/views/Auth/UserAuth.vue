@@ -10,6 +10,7 @@ const formIsValid = ref(true);
 const mode = ref('login');
 const isLoading = ref(false);
 const error = ref<string>('');
+const isSuccess = ref(false);
 
 const submitForm = async () => {
   formIsValid.value = true;
@@ -44,6 +45,7 @@ const submitForm = async () => {
       error.value = (e as string);
     }
   }
+  isSuccess.value = true;
   isLoading.value = false;
 }
 
@@ -73,7 +75,7 @@ const errorMessage = computed(() => {
     <div v-if="isLoading">
       <base-spinner/>
     </div>
-    <form @submit.prevent="submitForm" v-else>
+    <form @submit.prevent="submitForm" v-else-if="!isSuccess">
       <div class="field">
         <p class="control has-icons-left ">
           <input class="input" v-model.trim="email" type="email" placeholder="Email">

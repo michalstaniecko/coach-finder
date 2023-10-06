@@ -13,6 +13,7 @@ import type {UserCredential} from 'firebase/auth';
 import type {User} from 'firebase/auth';
 
 import {auth} from "@/js/firebase";
+import {useRequestsStore} from "@/stores";
 
 export const useUserStore = defineStore('user', {
     state: (): State => ({
@@ -24,10 +25,14 @@ export const useUserStore = defineStore('user', {
         },
         isLogged(): boolean {
             return !!this.user.id;
+        },
+        getEmail(): string {
+            return this.user!.email!;
         }
     },
     actions: {
         init() {
+            const requestsStore = useRequestsStore();
             onAuthStateChanged(auth, (user: User | null) => {
                 // TODO: should be done something with redirecting
                 if (user) {
@@ -37,7 +42,7 @@ export const useUserStore = defineStore('user', {
                 } else {
                     this.user = {}
                     this.router.push('/auth');
-
+                    requestsStore.clearRequests();
                 }
             })
         },

@@ -1,6 +1,7 @@
 export default interface State {
     lastFetch: number | null,
-    coaches: CoachInfo[]
+    coaches: CoachInfo[],
+    isLoading: boolean
 }
 
 export interface CoachInfo {

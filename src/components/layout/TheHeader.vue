@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import {useUserStore} from "@/stores";
+import {useUserStore, useCoachesStore} from "@/stores";
 import {computed} from "vue";
 
 const userStore = useUserStore();
+const coachesStore = useCoachesStore();
 
 const isLogged = computed(() => userStore.isLogged);
 
 const logout = () => {
   userStore.logout();
 }
+
+const isCoach = computed(() => coachesStore.isCoach);
 
 </script>
 
@@ -21,8 +24,11 @@ const logout = () => {
       <div class="navbar-menu">
         <div class="navbar-end is-align-items-center">
           <router-link class="navbar-item" active-class="is-active" to="/coaches">All Coaches</router-link>
-          <router-link class="navbar-item" active-class="is-active" to="/requests">Requests</router-link>
-          <base-button v-if="isLogged" type="button" @click.prevent="logout">Logout</base-button>
+          <router-link v-if="isLogged && isCoach" class="navbar-item" active-class="is-active" to="/requests">Requests</router-link>
+          <div class="navbar-item">
+            <base-button v-if="isLogged" type="button" @click.prevent="logout">Logout</base-button>
+            <base-button :link="true" to="/auth" v-else>Login</base-button>
+          </div>
         </div>
       </div>
     </nav>

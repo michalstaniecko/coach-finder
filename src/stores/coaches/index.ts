@@ -14,26 +14,8 @@ import {db} from '@/js/firebase';
 export const useCoachesStore = defineStore('coaches', {
     state: (): State => ({
         lastFetch: null,
-        coaches: [
-            {
-                id: 'c1',
-                firstName: 'Maximilian',
-                lastName: 'Schwarzmüller',
-                areas: ['frontend', 'backend', 'career'],
-                description:
-                    "I'm Maximilian and I've worked as a freelance web developer for years. Let me help you become a developer as well!",
-                hourlyRate: 20
-            },
-            {
-                id: 'c2',
-                firstName: 'Julie',
-                lastName: 'Jones',
-                areas: ['frontend', 'career'],
-                description:
-                    'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
-                hourlyRate: 30
-            }
-        ]
+        coaches: [],
+        isLoading: true
     }),
     getters,
     actions: {
@@ -62,7 +44,7 @@ export const useCoachesStore = defineStore('coaches', {
             })
         },
 
-        async loadAndSetCoaches(forceRefresh = false) {
+        async loadAndSetCoaches() {
 
             const coaches: CoachInfo[] = [];
             const coachesRef = ref(db, 'coaches');
@@ -76,6 +58,7 @@ export const useCoachesStore = defineStore('coaches', {
                     );
                 });
                 this.coaches = coaches;
+                this.isLoading = false;
             });
 
         },

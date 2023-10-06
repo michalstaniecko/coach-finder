@@ -47,6 +47,7 @@ onMounted(() => {
                 v-for="(request) in requests"
                 :message="request.message"
                 :email="request.userEmail"
+                :firstName="request.firstName"
                 :key="request.id"
             />
           </ul>

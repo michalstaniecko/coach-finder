@@ -2,9 +2,8 @@
 import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
 import {computed, reactive, onMounted, ref} from "vue";
-import {useCoachesStore} from "@/stores";
+import {useCoachesStore, useUserStore} from "@/stores";
 
-const isLoading = ref(false);
 const error = ref();
 
 const data = reactive<{
@@ -18,6 +17,7 @@ const data = reactive<{
 });
 
 const coachesStore = useCoachesStore();
+const userStore = useUserStore();
 
 const hasCoaches = computed(() => !isLoading.value && coachesStore.hasCoaches);
 const filteredCoaches = computed(() => {
@@ -28,17 +28,12 @@ const updateFiltersHandler = (filters: {[key: string]: boolean}) => {
   data.filters = filters;
 }
 
+const isLogged = computed(() => userStore.isLogged);
 const isCoach = computed(() => coachesStore.isCoach);
+const isLoading = computed(() => coachesStore.isLoading);
 
-const loadCoaches = async (forceRefresh = false) => {
-  isLoading.value = true;
-  try {
-    await coachesStore.loadAndSetCoaches(forceRefresh);
-  } catch (e) {
-    error.value = (e as Error).message || 'Something went wrong!';
-  }
-
-  isLoading.value = false;
+const loadCoaches = () => {
+  coachesStore.loadAndSetCoaches();
 }
 
 const onErrorClose = () => error.value = null
@@ -60,9 +55,8 @@ onMounted(() => {
       </section>
       <section>
         <base-box class="mt-5 has-background-grey-lighter">
-          <div class="buttons is-justify-content-space-between">
-            <base-button mode="" @click.prevent="loadCoaches(true)">Refresh</base-button>
-            <base-button v-if="!isCoach && !isLoading" link class="button" to="/register">Register as a coach</base-button>
+          <div class="has-text-right">
+            <base-button v-if="!isCoach && !isLoading && isLogged" link class="button" to="/register">Register as a coach</base-button>
           </div>
           <div v-if="isLoading">
             <base-spinner/>

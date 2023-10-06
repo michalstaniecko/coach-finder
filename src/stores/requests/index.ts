@@ -5,10 +5,13 @@ import {useUserStore} from "@/stores";
 import axios from "axios";
 import database from "@/database";
 import type {AxiosError} from "axios";
+import {onValue, set, ref} from "firebase/database";
+import {db} from '@/js/firebase';
 
 export const useRequestsStore = defineStore('requests', {
     state: (): State => ({
-        requests: []
+        requests: [],
+        unsubscribeSnapshot: null
     }),
     getters: {
         getRequests(): RequestInfo[] {
@@ -38,7 +41,8 @@ export const useRequestsStore = defineStore('requests', {
         async addRequest(request: RequestFormInfo) {
             const newRequest = {
                 userEmail: request.email,
-                message: request.message
+                message: request.message,
+                firstName: request.firstName
             }
             const response = await this.storeMessage(`requests/${request.coachId}.json`, newRequest);
 
@@ -53,21 +57,27 @@ export const useRequestsStore = defineStore('requests', {
         async fetchRequests() {
             const userStore = useUserStore();
             const coachId = userStore.getCurrentUserId;
+            const requests: RequestInfo[] = [];
 
             if (!coachId) return;
 
-            const response = await this.loadRequests(coachId);
-            const responseData = response.data;
-            if (responseData) {
-                this.requests = Object.keys(responseData).map(key => ({
-                    id: key,
-                    coachId: coachId,
-                    userEmail: responseData[key].userEmail,
-                    message: responseData[key].message
-                }));
-            } else {
-                this.requests = [];
-            }
+            const requestsRef = ref(db, `requests/${coachId}`);
+
+            this.unsubscribeSnapshot = onValue(requestsRef, (snapshot) => {
+                snapshot.forEach(doc => {
+                    requests.push({
+                        id: doc.key,
+                        coachId: coachId,
+                        ...doc.val()
+                    })
+                })
+                this.requests = requests;
+            });
+        },
+
+        clearRequests() {
+            this.requests = [];
+            if (this.unsubscribeSnapshot) this.unsubscribeSnapshot();
         }
     }
 })

@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import {useRequestsStore} from "@/stores";
+import {useRequestsStore, useUserStore} from "@/stores";
 import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
 
 const requestsStore = useRequestsStore();
+const userStore = useUserStore();
 
 const isLoading = ref(false);
 const error = ref<string | null>();
 const data = reactive({
   email: {
-    val: '',
+    val: userStore.getEmail,
     isValid: true
   },
   message: {
+    val: '',
+    isValid: true
+  },
+  firstName: {
     val: '',
     isValid: true
   },
@@ -27,8 +32,12 @@ const resetValidation = (input) => {
 const validateForm = () => {
   data.formIsValid = true;
 
-  if (data.email.val === '' || !data.email.val.includes('@')) {
+  if (data.email.val === '' || !data.email!.val!.includes('@')) {
     data.email.isValid = false;
+    data.formIsValid = false;
+  }
+  if (data.firstName.val === '') {
+    data.firstName.isValid = false;
     data.formIsValid = false;
   }
   if (data.message.val === '') {
@@ -49,6 +58,7 @@ const submitHandler = async () => {
   try {
     await requestsStore.addRequest({
       email: data.email.val,
+      firstName: data.firstName.val,
       message: data.message.val,
       coachId: coachId
     });
@@ -73,7 +83,7 @@ const onClose = () => error.value = null;
     <base-spinner v-if="isLoading"/>
     <form v-else class="py-5" @submit.prevent="submitHandler" novalidate>
       <div class="field">
-        <label class="label" for="email">First Name</label>
+        <label class="label" for="email">Email address</label>
         <div class="control">
           <input
               class="input"
@@ -83,9 +93,27 @@ const onClose = () => error.value = null;
               type="email"
               id="email"
               placeholder="Email"
+              readonly
+              disabled
           />
         </div>
         <p class="help is-danger" v-if="!data.email.isValid">Invalid email address!</p>
+      </div>
+
+      <div class="field">
+        <label class="label" for="email">First name</label>
+        <div class="control">
+          <input
+              class="input"
+              @blur="resetValidation('firstName')"
+              :class="{'is-danger': !data.firstName.isValid}"
+              v-model.trim="data.firstName.val"
+              type="text"
+              id="firts-name"
+              placeholder="First name"
+          />
+        </div>
+        <p class="help is-danger" v-if="!data.firstName.isValid">First name must not be empty!</p>
       </div>
 
       <div class="field">
