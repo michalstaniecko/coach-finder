@@ -22,7 +22,7 @@ const isCoach = computed(() => coachesStore.isCoach);
         <router-link class="navbar-item" to="/">Find a Coach</router-link>
       </h1>
       <div class="navbar-menu">
-        <div class="navbar-end is-align-items-center">
+        <div class="navbar-end">
           <router-link class="navbar-item" active-class="is-active" to="/coaches">All Coaches</router-link>
           <router-link v-if="isLogged && isCoach" class="navbar-item" active-class="is-active" to="/requests">Requests</router-link>
           <div class="navbar-item">

@@ -23,29 +23,25 @@ const submitForm = async () => {
 
   isLoading.value = true;
 
-  if (mode.value === 'signup') {
-    try {
+  try {
+    if (mode.value === 'signup') {
       await userStore.signup({
         email: email.value,
         password: password.value
       });
-    } catch (e) {
-      error.value = (e as string);
     }
-
-  }
-
-  if (mode.value === 'login') {
-    try {
+    if (mode.value === 'login') {
       await userStore.login({
         email: email.value,
         password: password.value
       });
-    } catch (e) {
-      error.value = (e as string);
     }
+    isSuccess.value = true;
+  } catch (e) {
+    error.value = (e as string);
+    isSuccess.value = false;
   }
-  isSuccess.value = true;
+
   isLoading.value = false;
 }
 
