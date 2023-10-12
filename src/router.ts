@@ -29,18 +29,21 @@ const router = createRouter({
             ]
         },
         {
-            path: '/register', component: Register
+            path: '/register', component: Register,
+            meta: {
+                requireAuth: true
+            }
         },
         {
             path: '/requests', component: Requests,
             meta: {
-                isAuth: true
+                requireAuth: true
             }
         },
         {
             path: '/auth', component: UserAuth,
             meta: {
-                isGuest: true
+                requireGuest: true
             }
         },
         {
@@ -53,9 +56,9 @@ const router = createRouter({
 router.beforeEach(async(to, from) => {
     const isAuth = await getIsAuth();
 
-    if (!isAuth && to.meta.isAuth) return '/coaches';
+    if (!isAuth && to.meta.requireAuth) return '/coaches';
 
-    if (isAuth && to.meta.isGuest) return '/coaches';
+    if (isAuth && to.meta.requireGuest) return '/coaches';
 
     return true;
 })
