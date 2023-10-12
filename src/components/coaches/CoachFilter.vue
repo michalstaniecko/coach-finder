@@ -13,7 +13,7 @@ const data = reactive({
   }
 });
 
-const setFilter = (event) => {
+const setFilter = (event: any) => {
   const inputId = event.target!.id;
   const isActive = event.target!.checked;
   const updatedFilters = {

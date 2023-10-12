@@ -11,7 +11,7 @@ const userStore = useUserStore();
 
 const isLoading = ref(false);
 const error = ref<string | null>();
-const data = reactive({
+const data = reactive<any>({
   email: {
     val: userStore.getEmail,
     isValid: true
@@ -26,7 +26,7 @@ const data = reactive({
   },
   formIsValid: true
 });
-const resetValidation = (input) => {
+const resetValidation = (input: string) => {
   data[input].isValid = true;
 }
 const validateForm = () => {

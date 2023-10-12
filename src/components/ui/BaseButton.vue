@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import {computed} from "vue";
+import type {RouteLocationRaw} from "vue-router";
 
 const props = withDefaults(defineProps<{
   link?: boolean | false,
-  to?: string | null,
+  to?: RouteLocationRaw,
   mode?: string | null,
   disabled?: boolean
 }>(), {
   disabled: false
 })
 
-const isDisabled = computed(() => props.disabled)
+const isDisabled = computed(() => props.disabled);
+
+const path = computed(() => props.to ?? '/')
 </script>
 
 <template>
@@ -23,7 +26,7 @@ const isDisabled = computed(() => props.disabled)
   </button>
   <router-link
       v-else
-      :to="to"
+      :to="path"
       :class="['button', mode, {'is-disable': isDisabled}]"
   >
     <slot></slot>

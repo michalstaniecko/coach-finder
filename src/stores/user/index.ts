@@ -63,6 +63,7 @@ export const useUserStore = defineStore('user', {
                 createUserWithEmailAndPassword(auth, email, password)
                     .then((userCredential: UserCredential) => {
                         const user = userCredential.user;
+                        this.router.push('/coaches');
                         resolve(true);
                     })
                     .catch((error) => {

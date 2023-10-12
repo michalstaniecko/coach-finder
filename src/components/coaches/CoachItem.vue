@@ -11,7 +11,7 @@ import {useUserStore} from "@/stores";
 const userStore = useUserStore();
 
 const props = defineProps<{
-  coach?: CoachInfo
+  coach: CoachInfo
 }>()
 
 const {path} = useRoute();

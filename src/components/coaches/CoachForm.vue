@@ -6,7 +6,7 @@ const emit = defineEmits<{
   (e: 'save-data', value: object): void
 }>();
 
-const data = reactive({
+const data = reactive<any>({
   firstName: {
     val: '',
     isValid: true
@@ -30,7 +30,7 @@ const data = reactive({
   formIsValid: true
 });
 
-const resetValidation = (input) => {
+const resetValidation = (input: string) => {
   data[input].isValid = true;
 }
 

@@ -12,7 +12,9 @@ const props = defineProps<{
 
 const coachesStore = useCoachesStore();
 
-const {firstName, lastName, hourlyRate, areas, description} = coachesStore.getCoachById(props.id);
+const emptyCoach = {firstName: null, lastName: null, hourlyRate: null, areas: null, description: null};
+
+const {firstName, lastName, hourlyRate, areas, description} = coachesStore.getCoachById(props.id) || emptyCoach;
 
 const rate = computed(() => {
   return `$${hourlyRate}/hour`;

@@ -7,7 +7,7 @@ const coachStore = useCoachesStore();
 
 const router = useRouter();
 
-const saveDataHandler = (formData) => {
+const saveDataHandler = (formData: any) => {
   coachStore.addCoach(formData);
   router.push('/coaches');
 }
