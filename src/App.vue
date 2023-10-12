@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import {useUserStore} from "@/stores";
+import {useCoachesStore, useUserStore} from "@/stores";
 import TheHeader from "@/components/layout/TheHeader.vue";
 import {onMounted} from "vue";
 
 const userStore = useUserStore();
+const coachesStore = useCoachesStore();
 
 onMounted(() => {
   userStore.init();
+  coachesStore.loadAndSetCoaches();
 });
 </script>
 

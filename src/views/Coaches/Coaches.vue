@@ -32,15 +32,7 @@ const isLogged = computed(() => userStore.isLogged);
 const isCoach = computed(() => coachesStore.isCoach);
 const isLoading = computed(() => coachesStore.isLoading);
 
-const loadCoaches = () => {
-  coachesStore.loadAndSetCoaches();
-}
-
 const onErrorClose = () => error.value = null
-
-onMounted(() => {
-  loadCoaches();
-});
 
 </script>
 

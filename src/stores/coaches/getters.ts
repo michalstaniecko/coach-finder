@@ -28,9 +28,7 @@ export default {
         const coaches = state.coaches;
         const userStoreRef = storeToRefs(userStore);
         const currentUserId = userStoreRef.getCurrentUserId;
-        console.log(currentUserId.value, coaches)
         return coaches.some(coach => {
-            console.log(coach.id, currentUserId.value)
             return coach.id === currentUserId.value
         });
     }
