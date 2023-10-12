@@ -96,7 +96,7 @@ const errorMessage = computed(() => {
       </div>
       <div class="field">
         <p class="control">
-          <base-button type="button" mode="is-primary mr-3" @click.prevent="submitForm">Submit</base-button>
+          <base-button type="submit" mode="is-primary mr-3">Submit</base-button>
         </p>
       </div>
     </form>
