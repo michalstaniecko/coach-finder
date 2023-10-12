@@ -71,15 +71,15 @@ export const useUserStore = defineStore('user', {
                         reject(errorCode);
                     })
             })
-        }
-        ,
-        logout() {
-            signOut(auth)
-                .then(() => {
-                    this.router.push('/coaches');
-                })
-                .catch((error) => {
-                })
+        },
+        async logout() {
+            try {
+                await signOut(auth);
+                this.router.push('/coaches');
+            } catch (e) {
+                console.log(e);
+            }
+            return true;
         }
     }
 })

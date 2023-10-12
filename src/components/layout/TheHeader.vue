@@ -1,26 +1,33 @@
 <script setup lang="ts">
 import {useUserStore, useCoachesStore} from "@/stores";
-import {computed} from "vue";
 import {storeToRefs} from "pinia";
+import {ref} from "vue";
 
 const userStore = useUserStore();
 const coachesStore = useCoachesStore();
 
+const isLogout = ref(false);
+
 const {isLogged} = storeToRefs(userStore);
 
-const logout = () => {
-  userStore.logout();
+const logout = async () => {
+  isLogout.value = await userStore.logout();
 }
 
 const coachesStoreRef = storeToRefs(coachesStore);
 const isCoach = coachesStoreRef.isCoach;
 
-console.log(isLogged.value, isCoach.value)
+const closeHandler = () => isLogout.value = false
 
 </script>
 
 <template>
   <header>
+    <base-dialog :show="isLogout" title="Logout" @close="closeHandler">
+      <p>
+        User has been logout.
+      </p>
+    </base-dialog>
     <nav class="navbar is-primary">
       <h1 class="navbar-brand">
         <router-link class="navbar-item" to="/">Find a Coach</router-link>

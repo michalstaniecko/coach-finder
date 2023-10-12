@@ -4,9 +4,6 @@ import type State from "@/stores/coaches/interfaces";
 import type {CoachInfo} from "@/stores/coaches/interfaces";
 import type {CoachFormInfo} from "@/stores/coaches/interfaces";
 import {useUserStore} from "@/stores/user";
-import axios from "axios";
-import database from "@/database";
-import type {AxiosError} from "axios";
 
 import {ref, set, onValue} from 'firebase/database';
 import {db} from '@/js/firebase';
@@ -61,9 +58,6 @@ export const useCoachesStore = defineStore('coaches', {
                 this.isLoading = false;
             });
 
-        },
-        setFetchTimestamp() {
-            this.lastFetch = new Date().getTime();
         }
     }
 });
