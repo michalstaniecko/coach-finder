@@ -43,9 +43,9 @@ export const useCoachesStore = defineStore('coaches', {
 
         async loadAndSetCoaches() {
 
-            const coaches: CoachInfo[] = [];
             const coachesRef = ref(db, 'coaches');
             const unsubscribe = onValue(coachesRef, (snapshot) => {
+                const coaches: CoachInfo[] = [];
                 snapshot.forEach((doc) => {
                     coaches.push(
                         {

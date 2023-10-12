@@ -10,7 +10,7 @@ export default {
             }
             const filteredCoaches = state.coaches.filter(coach => {
                 return coach.areas.some(area => filters[area] === true);
-            })
+            });
             return filteredCoaches;
         };
     },
