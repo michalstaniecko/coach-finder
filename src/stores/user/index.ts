@@ -34,14 +34,11 @@ export const useUserStore = defineStore('user', {
         init() {
             const requestsStore = useRequestsStore();
             onAuthStateChanged(auth, (user: User | null) => {
-                // TODO: should be done something with redirecting
                 if (user) {
                     this.user.id = user.uid;
                     this.user.email = user.email;
-                    this.router.push('/coaches');
                 } else {
                     this.user = {}
-                    this.router.push('/auth');
                     requestsStore.clearRequests();
                 }
             })
@@ -51,6 +48,7 @@ export const useUserStore = defineStore('user', {
                 signInWithEmailAndPassword(auth, email, password)
                     .then((userCredential: UserCredential) => {
                         const user = userCredential.user;
+                        this.router.push('/coaches');
                         resolve(true);
                     })
                     .catch(error => {
@@ -78,6 +76,7 @@ export const useUserStore = defineStore('user', {
         logout() {
             signOut(auth)
                 .then(() => {
+                    this.router.push('/coaches');
                 })
                 .catch((error) => {
                 })

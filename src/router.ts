@@ -6,6 +6,7 @@ import Register from "@/views/Coaches/Register.vue";
 import Requests from "@/views/Requests/Requests.vue";
 import NotFound from "@/views/NotFound.vue";
 import UserAuth from "@/views/Auth/UserAuth.vue";
+import {getIsAuth} from "@/js/firebase";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -31,10 +32,16 @@ const router = createRouter({
             path: '/register', component: Register
         },
         {
-            path: '/requests', component: Requests
+            path: '/requests', component: Requests,
+            meta: {
+                isAuth: true
+            }
         },
         {
-            path: '/auth', component: UserAuth
+            path: '/auth', component: UserAuth,
+            meta: {
+                isGuest: true
+            }
         },
         {
             path: '/:notFound(.*)', component: NotFound
@@ -42,8 +49,15 @@ const router = createRouter({
     ]
 });
 
-router.beforeEach(() => {
 
+router.beforeEach(async(to, from) => {
+    const isAuth = await getIsAuth();
+
+    if (!isAuth && to.meta.isAuth) return '/coaches';
+
+    if (isAuth && to.meta.isGuest) return '/coaches';
+
+    return true;
 })
 
 export default router;

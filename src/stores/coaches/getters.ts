@@ -1,5 +1,6 @@
 import type State from "@/stores/coaches/interfaces";
 import {useUserStore} from "@/stores/user";
+import {storeToRefs} from "pinia";
 
 export default {
     getCoaches: (state: State) => {
@@ -25,17 +26,12 @@ export default {
     isCoach(state: State) {
         const userStore = useUserStore();
         const coaches = state.coaches;
-        const currentUserId = userStore.getCurrentUserId;
-        return coaches.some(coach => coach.id === currentUserId);
-    },
-
-    shouldUpdate(state: State) {
-        const lastFetch = state.lastFetch;
-        if (!lastFetch) {
-            return true;
-        }
-
-        const currentTimestamp = new Date().getTime();
-        return (currentTimestamp - lastFetch) / 1000 > 60;
+        const userStoreRef = storeToRefs(userStore);
+        const currentUserId = userStoreRef.getCurrentUserId;
+        console.log(currentUserId.value, coaches)
+        return coaches.some(coach => {
+            console.log(coach.id, currentUserId.value)
+            return coach.id === currentUserId.value
+        });
     }
 }

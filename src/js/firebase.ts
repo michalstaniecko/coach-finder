@@ -18,4 +18,13 @@ const auth = getAuth(app);
 
 const db = getDatabase(app);
 
-export {auth, db};
+async function getIsAuth(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            unsubscribe();
+            resolve(!!user);
+        }, reject);
+    });
+}
+
+export {auth, db, getIsAuth};
